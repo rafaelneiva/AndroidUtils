@@ -10,7 +10,9 @@ import android.view.animation.Transformation;
  */
 public class AnimationUtil {
 
-    // expand a View with animation
+    /**
+     * @param v View that will be expanded with animation
+     */
     public static void expand(final View v) {
         v.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         final int targetHeight = v.getMeasuredHeight();
@@ -37,7 +39,9 @@ public class AnimationUtil {
         v.startAnimation(a);
     }
 
-    // collapse a View with animation
+    /**
+     * @param v View that will be closed with animation and visibility will be changed to Gone
+     */
     public static void collapse(final View v) {
         final int initialHeight = v.getMeasuredHeight();
 

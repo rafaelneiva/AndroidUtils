@@ -9,12 +9,20 @@ import android.widget.EditText;
  */
 public class Mask {
 
+    /**
+     * @param s String that will be unmasked
+     * @return Unmasked String
+     */
     public static String unmask(String s) {
         return s.replaceAll("[.]", "").replaceAll("[-]", "")
                 .replaceAll("[/]", "").replaceAll("[(]", "")
                 .replaceAll("[)]", "");
     }
 
+    /**
+     * @param mask   A String mask
+     * @param ediTxt EditText to assign TextWatcher
+     */
     public static TextWatcher insert(final String mask, final EditText ediTxt) {
         return new TextWatcher() {
             boolean isUpdating;

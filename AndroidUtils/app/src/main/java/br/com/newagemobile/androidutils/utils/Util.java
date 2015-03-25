@@ -1,6 +1,9 @@
 package br.com.newagemobile.androidutils.utils;
 
 import android.content.Context;
+import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +22,11 @@ public class Util {
 
     // ********** JSON Utils ********** //
 
-    // return a String JSON from a .json file on assets folder
+    /**
+     * @param ctx      Activity/Context
+     * @param jsonFile The file in assets folder
+     * @return Return a JSON String
+     */
     public static String loadJSONFromAsset(Context ctx, String jsonFile) {
         String json;
         try {
@@ -42,7 +49,13 @@ public class Util {
 
     // ********** Format Utils ********** //
 
-    // return a String formatted with 'format'
+    /**
+     * @param day    Day of month
+     * @param month  Month of the year start with 0
+     * @param year   Year number
+     * @param format Format to be used
+     * @return Return a String formatted with 'format'
+     */
     public static String formatDate(int day, int month, int year, String format) {
 
         SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
@@ -53,7 +66,11 @@ public class Util {
         return sdf.format(date);
     }
 
-    // return a String formatted with 'currency'
+    /**
+     * @param value    The value that will be formatted
+     * @param currency To be used before value
+     * @return Return a String formatted with 'currency'
+     */
     public static String formatValue(Double value, String currency) {
         if (value == null)
             return "";
@@ -65,5 +82,37 @@ public class Util {
     }
 
     // ********** Format Utils ********** //
+
+
+    // ********** Misc Utils ********** //
+
+    /**
+     * @param context Activity/Context
+     * @param view    Field that holds the keyboard focus
+     */
+    public static void closeKeyboard(Context context, View view) {
+        try {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        } catch (Exception ex) {
+            Log.e("AndroidUtils", "Error occurred trying to hide the keyboard. Exception: " + ex);
+        }
+    }
+
+    /**
+     * @param context Activity/Context
+     * @param view    Field that requests focus
+     */
+    public static void showKeyboard(Context context, View view) {
+        try {
+            view.requestFocus();
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+        } catch (Exception ex) {
+            Log.e("AndroidUtils", "Error occurred trying to show the keyboard. Exception: " + ex);
+        }
+    }
+
+    // ********** Misc Utils ********** //
 
 }
