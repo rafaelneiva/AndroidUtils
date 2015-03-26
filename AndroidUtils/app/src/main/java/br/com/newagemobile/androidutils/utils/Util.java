@@ -81,6 +81,42 @@ public class Util {
         return currency + format.format(value);
     }
 
+    /**
+     *
+     * @param phoneNumber The number to be formatted with ( and -
+     * @return The number formatted with nine or eight numbers
+     */
+    public static String formatPhone(String phoneNumber) {
+        phoneNumber = phoneNumber.replaceAll("[^\\d]", "" );
+
+        if (phoneNumber == null)
+            return "";
+        String foneRet = "(";
+        if (phoneNumber.length() == 10) {
+            for (int i = 0; i < phoneNumber.length(); i++) {
+                if (i == 1) {
+                    foneRet += phoneNumber.charAt(i) + ")";
+                } else if (i == 5) {
+                    foneRet += phoneNumber.charAt(i) + "-";
+                } else {
+                    foneRet += phoneNumber.charAt(i);
+                }
+            }
+        } else if (phoneNumber.length() == 11) {
+            for (int i = 0; i < phoneNumber.length(); i++) {
+                if (i == 1) {
+                    foneRet += phoneNumber.charAt(i) + ")";
+                } else if (i == 6) {
+                    foneRet += phoneNumber.charAt(i) + "-";
+                } else {
+                    foneRet += phoneNumber.charAt(i);
+                }
+            }
+        }
+
+        return foneRet;
+    }
+
     // ********** Format Utils ********** //
 
 
