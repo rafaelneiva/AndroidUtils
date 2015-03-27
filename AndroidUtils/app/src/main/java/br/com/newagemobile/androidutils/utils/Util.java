@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -82,39 +83,38 @@ public class Util {
     }
 
     /**
-     *
      * @param phoneNumber The number to be formatted with ( and -
      * @return The number formatted with nine or eight numbers
      */
     public static String formatPhone(String phoneNumber) {
-        phoneNumber = phoneNumber.replaceAll("[^\\d]", "" );
+        phoneNumber = phoneNumber.replaceAll("[^\\d]", "");
 
         if (phoneNumber == null)
             return "";
-        String foneRet = "(";
+        String phoneF = "(";
         if (phoneNumber.length() == 10) {
             for (int i = 0; i < phoneNumber.length(); i++) {
                 if (i == 1) {
-                    foneRet += phoneNumber.charAt(i) + ")";
+                    phoneF += phoneNumber.charAt(i) + ")";
                 } else if (i == 5) {
-                    foneRet += phoneNumber.charAt(i) + "-";
+                    phoneF += phoneNumber.charAt(i) + "-";
                 } else {
-                    foneRet += phoneNumber.charAt(i);
+                    phoneF += phoneNumber.charAt(i);
                 }
             }
         } else if (phoneNumber.length() == 11) {
             for (int i = 0; i < phoneNumber.length(); i++) {
                 if (i == 1) {
-                    foneRet += phoneNumber.charAt(i) + ")";
+                    phoneF += phoneNumber.charAt(i) + ")";
                 } else if (i == 6) {
-                    foneRet += phoneNumber.charAt(i) + "-";
+                    phoneF += phoneNumber.charAt(i) + "-";
                 } else {
-                    foneRet += phoneNumber.charAt(i);
+                    phoneF += phoneNumber.charAt(i);
                 }
             }
         }
 
-        return foneRet;
+        return phoneF;
     }
 
     // ********** Format Utils ********** //
@@ -147,6 +147,24 @@ public class Util {
         } catch (Exception ex) {
             Log.e("AndroidUtils", "Error occurred trying to show the keyboard. Exception: " + ex);
         }
+    }
+
+    /**
+     * Default SHORT duration
+     * @param ctx Context/Activity
+     * @param msg Message to show
+     */
+    public static void quickToast(Context ctx, String msg) {
+        quickToast(ctx, msg, false);
+    }
+
+    /**
+     * @param ctx    Context/Activity
+     * @param msg    Message to show
+     * @param isLong If true, toast duration is LONG
+     */
+    public static void quickToast(Context ctx, String msg, boolean isLong) {
+        Toast.makeText(ctx, msg, isLong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
     }
 
     // ********** Misc Utils ********** //
