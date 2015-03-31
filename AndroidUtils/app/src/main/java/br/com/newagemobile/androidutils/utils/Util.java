@@ -1,13 +1,21 @@
 package br.com.newagemobile.androidutils.utils;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
+import android.widget.EdgeEffect;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -151,6 +159,7 @@ public class Util {
 
     /**
      * Default SHORT duration
+     *
      * @param ctx Context/Activity
      * @param msg Message to show
      */
@@ -165,6 +174,108 @@ public class Util {
      */
     public static void quickToast(Context ctx, String msg, boolean isLong) {
         Toast.makeText(ctx, msg, isLong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * @param colorId  The color id used to set notification bar color
+     * @param name     The name that will appear on recent apps
+     * @param activity The activity that will be applied
+     */
+    private void tintNotificationBar(int colorId, String name, Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            activity.getWindow().setStatusBarColor(activity.getResources().getColor(colorId));
+            ActivityManager.TaskDescription tDesc =
+                    new ActivityManager.TaskDescription(name, null, activity.getResources().getColor(colorId));
+            activity.setTaskDescription(tDesc);
+        }
+    }
+
+    /**
+     * @param listView ListView to apply edge effect color
+     * @param color    Color of the edge effect
+     */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static void setListEdgeGlowColor(AbsListView listView, int color) {
+
+        final Class<?> CLASS_LIST_VIEW = AbsListView.class;
+        final Field LIST_VIEW_FIELD_EDGE_GLOW_TOP;
+        final Field LIST_VIEW_FIELD_EDGE_GLOW_BOTTOM;
+
+        Field edgeGlowTop = null, edgeGlowBottom = null;
+
+        for (Field f : CLASS_LIST_VIEW.getDeclaredFields()) {
+            switch (f.getName()) {
+                case "mEdgeGlowTop":
+                    f.setAccessible(true);
+                    edgeGlowTop = f;
+                    break;
+                case "mEdgeGlowBottom":
+                    f.setAccessible(true);
+                    edgeGlowBottom = f;
+                    break;
+            }
+        }
+
+        LIST_VIEW_FIELD_EDGE_GLOW_TOP = edgeGlowTop;
+        LIST_VIEW_FIELD_EDGE_GLOW_BOTTOM = edgeGlowBottom;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            try {
+                EdgeEffect ee;
+                assert LIST_VIEW_FIELD_EDGE_GLOW_TOP != null;
+                ee = (EdgeEffect) LIST_VIEW_FIELD_EDGE_GLOW_TOP.get(listView);
+                ee.setColor(color);
+                assert LIST_VIEW_FIELD_EDGE_GLOW_BOTTOM != null;
+                ee = (EdgeEffect) LIST_VIEW_FIELD_EDGE_GLOW_BOTTOM.get(listView);
+                ee.setColor(color);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * @param scrollView ScrollView to apply edge effect color
+     * @param color      Color of the edge effect
+     */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static void setScrollEdgeGlowColor(ScrollView scrollView, int color) {
+
+        final Class<?> CLASS_SCROLL_VIEW = ScrollView.class;
+        final Field SCROLL_VIEW_FIELD_EDGE_GLOW_TOP;
+        final Field SCROLL_VIEW_FIELD_EDGE_GLOW_BOTTOM;
+
+        Field edgeGlowTop = null, edgeGlowBottom = null;
+
+        for (Field f : CLASS_SCROLL_VIEW.getDeclaredFields()) {
+            switch (f.getName()) {
+                case "mEdgeGlowTop":
+                    f.setAccessible(true);
+                    edgeGlowTop = f;
+                    break;
+                case "mEdgeGlowBottom":
+                    f.setAccessible(true);
+                    edgeGlowBottom = f;
+                    break;
+            }
+        }
+
+        SCROLL_VIEW_FIELD_EDGE_GLOW_TOP = edgeGlowTop;
+        SCROLL_VIEW_FIELD_EDGE_GLOW_BOTTOM = edgeGlowBottom;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            try {
+                EdgeEffect ee;
+                assert SCROLL_VIEW_FIELD_EDGE_GLOW_TOP != null;
+                ee = (EdgeEffect) SCROLL_VIEW_FIELD_EDGE_GLOW_TOP.get(scrollView);
+                ee.setColor(color);
+                assert SCROLL_VIEW_FIELD_EDGE_GLOW_BOTTOM != null;
+                ee = (EdgeEffect) SCROLL_VIEW_FIELD_EDGE_GLOW_BOTTOM.get(scrollView);
+                ee.setColor(color);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     // ********** Misc Utils ********** //
