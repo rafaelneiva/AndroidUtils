@@ -42,7 +42,6 @@ public class Util {
             InputStream is = ctx.getAssets().open(jsonFile);
             int size = is.available();
             byte[] buffer = new byte[size];
-//            is.read(buffer);
             is.close();
             json = new String(buffer, "UTF-8");
         } catch (IOException ex) {
