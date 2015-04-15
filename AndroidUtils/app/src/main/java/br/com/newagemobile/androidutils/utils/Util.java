@@ -177,11 +177,10 @@ public class Util {
 
     /**
      * @param colorId  The color id used to set notification bar color
-     * @param name     The name that will appear on recent apps
      * @param activity The activity that will be applied
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void tintNotificationBar(int colorId, String name, Activity activity) {
+    public static void tintNotificationBar(int colorId, Activity activity) {
         activity.getWindow().setStatusBarColor(activity.getResources().getColor(colorId));
     }
 
@@ -191,7 +190,7 @@ public class Util {
      * @param activity The activity that will be applied
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void tintTaskDescription(int colorId, String name, Activity activity) {
+    public static void tintTaskDescription(int colorId, String name, Activity activity) {
         ActivityManager.TaskDescription tDesc =
                 new ActivityManager.TaskDescription(name, null, activity.getResources().getColor(colorId));
         activity.setTaskDescription(tDesc);
