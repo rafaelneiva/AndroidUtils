@@ -3,8 +3,12 @@ package br.com.newagemobile.androidutils.utils;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -128,6 +132,32 @@ public class Util {
 
 
     // ********** Misc Utils ********** //
+
+    /**
+     * @param ctx            Context of application
+     * @param intentClass    Class of activity to be called when notification is clicked
+     * @param title          Title of notification
+     * @param msg            Message of notification
+     * @param drawableId     Icon of notification
+     * @param notificationId ID of notification
+     */
+    public static void createNotification(Context ctx, Class intentClass, String title, String msg, int drawableId, int notificationId) {
+        NotificationManager mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        Intent intent = new Intent(ctx, intentClass);
+        intent.putExtra("notification", true);
+        PendingIntent contentIntent = PendingIntent.getActivity(ctx, 0, intent, 0);
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ctx)
+                .setSmallIcon(drawableId)
+                .setContentTitle(title)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
+                .setContentText(msg)
+                .setAutoCancel(true);
+
+        mBuilder.setContentIntent(contentIntent);
+        mNotificationManager.notify(notificationId, mBuilder.build());
+    }
 
     /**
      * @param context Activity/Context
