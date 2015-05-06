@@ -217,6 +217,15 @@ public class Util {
     }
 
     /**
+     * @param colorId  The color id used to set navigation bar color
+     * @param activity The activity that will be applied
+     */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static void tintNavigationBar(int colorId, Activity activity) {
+        activity.getWindow().setNavigationBarColor(activity.getResources().getColor(colorId));
+    }
+
+    /**
      * @param colorId  The color id used to set task description color
      * @param name     The name that will appear on recent apps
      * @param activity The activity that will be applied
